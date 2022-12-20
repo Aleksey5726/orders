@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  php-fpm:
+    container_name: php-fpm
+    build: .docker/php-fpm
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./:/var/www/orders
+  php-cli:
+    container_name: php-cli
+    build: .docker/php-cli
+    tty: true
+    volumes:
+      - ./:/var/www/orders
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: orders
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+volumes:
+  db_data:
